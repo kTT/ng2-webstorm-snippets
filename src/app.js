@@ -1,23 +1,32 @@
 'use strict';
 const fs = require('fs');
 const escape = require('escape-html');
+const fetch = require('node-fetch');
 
-const TYPESCRIPT_FILE = `${__dirname}/../node_modules/Angular2/snippets/typescript.json`;
-const HTML_FILE = `${__dirname}/../node_modules/Angular2/snippets/html.json`;
+async function getObjectAsync(url) {
+  return (await fetch(url)).json();
+}
 
-const vsTsTemplate = JSON.parse(fs.readFileSync(TYPESCRIPT_FILE, 'utf8'));
-const vsHTMLTemplate = JSON.parse(fs.readFileSync(HTML_FILE, 'utf8'));
+processFiles();
 
-let webshtormXML = '<templateSet group="Angular2 TypeScript Live Templates">';
+async function processFiles() {
+  const [vsTsTemplate, vsHTMLTemplate] =
+    await Promise.all([
+	getObjectAsync("https://raw.githubusercontent.com/johnpapa/vscode-angular-snippets/master/snippets/typescript.json"),
+	getObjectAsync("https://raw.githubusercontent.com/johnpapa/vscode-angular-snippets/master/snippets/html.json")
+    ]);
 
-webshtormXML += convert(vsTsTemplate, 'typescript');
-webshtormXML += convert(vsHTMLTemplate, 'html');
+  let webshtormXML = '<templateSet group="Angular2 TypeScript Live Templates">';
 
-webshtormXML += '</templateSet>';
+  webshtormXML += convert(vsTsTemplate, 'typescript');
+  webshtormXML += convert(vsHTMLTemplate, 'html');
 
-fs.writeFileSync(`${__dirname}/../dist/ng2-templates.xml`, webshtormXML, 'utf8');
+  webshtormXML += '</templateSet>';
 
-console.log('\x1b[32m', "- created", '\x1b[0m', "/dist/ng2-templates.xml");
+  fs.writeFileSync(`${__dirname}/../dist/ng2-templates.xml`, webshtormXML, 'utf8');
+
+  console.log('\x1b[32m', "- created", '\x1b[0m', "/dist/ng2-templates.xml");
+}
 
 function convert(vsTemplate, type) {
   const variableRegexp = /\$\{([^\}|^0]+)\}/g;
@@ -85,4 +94,3 @@ function convert(vsTemplate, type) {
   
   return webstormXml;
 }
-

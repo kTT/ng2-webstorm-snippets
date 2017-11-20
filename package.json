@@ -1,7 +1,7 @@
 {
   "name": "ng2-webstorm-snippets",
-  "version": "2.0.0",
-  "description": "Angular 2 TypeScript snippets for WebStorm based on John Papa snippets for Visual Code",
+  "version": "2.1.0",
+  "description": "Angular TypeScript snippets for WebStorm based on John Papa snippets for Visual Code",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
@@ -9,16 +9,19 @@
     "prestart": "npm install"
   },
   "author": "Denis Zaichenko",
+  "contributors": [
+	  "Pawel Mozdzonek <pawel@ktt.li> (https://ktt.li)"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:MrZaYaC/ng2-webstorm-snippets.git"
   },
-  "engines" : {
-    "node" : ">=4.0.0 <6.0.0"
+  "engines": {
+    "node": ">=7.0.0"
   },
   "dependencies": {
-    "Angular2": "github:johnpapa/vscode-angular2-snippets",
-    "escape-html": "^1.0.3"
+    "escape-html": "^1.0.3",
+    "node-fetch": "^1.7.3"
   }
 }
